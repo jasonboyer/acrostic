@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Acrostic Constructor</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Acrostic Constructor</p>
+          <h1>Build a quote puzzle from source to clues.</h1>
+        </div>
+        <div class="topbar-actions">
+          <div class="file-menu">
+            <button class="ghost-button" id="fileMenuButton" type="button" aria-haspopup="true" aria-expanded="false">File</button>
+            <div class="file-menu-popover" id="fileMenu" role="menu" hidden>
+              <button id="openPuzzle" type="button" role="menuitem">Open</button>
+              <button id="savePuzzle" type="button" role="menuitem">Save</button>
+              <button id="saveAsPuzzle" type="button" role="menuitem">Save As</button>
+              <button id="printPreview" type="button" role="menuitem">Print Preview</button>
+              <button id="printPuzzle" type="button" role="menuitem">Print</button>
+            </div>
+          </div>
+          <span class="file-name" id="currentFileName">Untitled puzzle</span>
+          <button class="ghost-button" id="loadSample" type="button">Load sample</button>
+        </div>
+      </header>
+
+      <section class="workspace" aria-label="Puzzle constructor">
+        <form class="setup-panel" id="setupForm">
+          <div class="panel-heading">
+            <h2>Source</h2>
+            <p>The author and title determine clue initials, in order.</p>
+          </div>
+
+          <label class="field">
+            <span>Author as printed</span>
+            <input id="authorInput" name="author" autocomplete="off" placeholder="A.A. Milne">
+          </label>
+
+          <label class="field">
+            <span>Book title as printed</span>
+            <input id="titleInput" name="title" autocomplete="off" placeholder="Winnie-the-Pooh">
+          </label>
+
+          <label class="field">
+            <span>Puzzle title</span>
+            <input id="puzzleTitleInput" name="puzzleTitle" autocomplete="off" placeholder="Optional working title">
+          </label>
+
+          <label class="field field-tall">
+            <span>Quote</span>
+            <textarea id="quoteInput" name="quote" rows="9" placeholder="Paste the quote here. Letters become grid cells; spaces and punctuation become black squares."></textarea>
+          </label>
+
+          <div class="field-grid">
+            <label class="field">
+              <span>Grid columns</span>
+              <input id="columnsInput" type="number" min="8" max="40" value="27">
+            </label>
+
+            <label class="field">
+              <span>Minimum answer length</span>
+              <input id="minLengthInput" type="number" min="4" max="12" value="4">
+            </label>
+          </div>
+
+          <div class="panel-actions">
+            <button class="primary-button" id="buildPuzzle" type="submit">Build clue list</button>
+          </div>
+        </form>
+
+        <aside class="status-panel" aria-label="Puzzle status">
+          <div class="panel-heading">
+            <h2>Status</h2>
+            <p>Live checks for the current construction.</p>
+          </div>
+          <dl class="stats-grid">
+            <div>
+              <dt>Quote cells</dt>
+              <dd id="letterCount">0</dd>
+            </div>
+            <div>
+              <dt>Black cells</dt>
+              <dd id="blackCount">0</dd>
+            </div>
+            <div>
+              <dt>Clues</dt>
+              <dd id="clueCount">0</dd>
+            </div>
+            <div>
+              <dt>Answer letters</dt>
+              <dd id="answerLetterCount">0</dd>
+            </div>
+          </dl>
+          <div class="source-strip">
+            <span>Initials</span>
+            <output id="initialsOutput">-</output>
+          </div>
+          <ul class="checks" id="checksList" aria-live="polite"></ul>
+        </aside>
+      </section>
+
+      <section class="preview-layout">
+        <section class="quote-panel" aria-label="Quote grid preview">
+          <div class="panel-heading">
+            <h2>Quote Grid</h2>
+            <p>Black cells mark spaces and punctuation.</p>
+          </div>
+          <div class="grid-wrap">
+            <div class="quote-grid" id="quoteGrid"></div>
+          </div>
+        </section>
+
+        <section class="available-panel" aria-label="Available cell pool">
+          <div class="panel-heading">
+            <h2>Available Pool</h2>
+            <p>Drag cells to arrange your workspace.</p>
+          </div>
+          <div class="pool-toolbar">
+            <button class="ghost-button" id="resetPool" type="button">Reset pool</button>
+          </div>
+          <div class="available-pool-live" id="availablePool"></div>
+        </section>
+
+        <section class="clue-panel" aria-label="Clue editor">
+          <div class="panel-heading">
+            <h2>Clues</h2>
+            <p>Each answer must start with its required source initial.</p>
+          </div>
+          <div class="clue-toolbar">
+            <button class="ghost-button" id="balanceLengths" type="button">Suggest lengths</button>
+            <button class="ghost-button" id="clearAnswers" type="button">Clear answers</button>
+          </div>
+          <div class="clue-table" id="clueTable"></div>
+        </section>
+      </section>
+    </main>
+
+    <template id="clueRowTemplate">
+      <article class="clue-row">
+        <div class="clue-letter"></div>
+        <div class="required-initial"></div>
+        <label class="compact-field answer-field">
+          <span>Answer</span>
+          <input class="answer-input" autocomplete="off">
+        </label>
+        <label class="compact-field clue-field">
+          <span>Clue</span>
+          <input class="clue-input" autocomplete="off">
+        </label>
+        <label class="compact-field length-field">
+          <span>Len</span>
+          <output class="length-output"></output>
+        </label>
+      </article>
+    </template>
+
+    <section class="print-preview-panel" id="printPreviewPanel" hidden>
+      <div class="print-preview-actions">
+        <h2>Print Preview</h2>
+        <div>
+          <label class="print-option">
+            <input id="fillAnswersPrint" type="checkbox">
+            Fill answers
+          </label>
+          <button class="ghost-button" id="closePrintPreview" type="button">Close</button>
+          <button class="primary-button" id="printFromPreview" type="button">Print</button>
+        </div>
+      </div>
+      <div class="print-sheet" id="printSheet" aria-label="Printable puzzle"></div>
+    </section>
+
+    <input class="fallback-file-input" id="importPuzzle" type="file" accept="application/json,.json">
+    <script src="./app.js" defer></script>
+  </body>
+</html>
