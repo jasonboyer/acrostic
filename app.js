@@ -44,6 +44,7 @@ const elements = {
   closePrintPreview: document.querySelector("#closePrintPreview"),
   printFromPreview: document.querySelector("#printFromPreview"),
   fillAnswersPrint: document.querySelector("#fillAnswersPrint"),
+  fillGridPrint: document.querySelector("#fillGridPrint"),
   currentFileName: document.querySelector("#currentFileName"),
   balanceLengths: document.querySelector("#balanceLengths"),
   clearAnswers: document.querySelector("#clearAnswers"),
@@ -854,9 +855,9 @@ function renderPrintSheet() {
   const headingGroup = document.createElement("div");
   const heading = document.createElement("h2");
   heading.textContent = state.puzzleTitle || state.title || "Untitled Acrostic";
-  const byline = document.createElement("p");
-  byline.textContent = state.author ? `Source: ${state.author}` : "Source";
-  headingGroup.append(heading, byline);
+  // const byline = document.createElement("p");
+  // byline.textContent = state.author ? `Source: ${state.author}` : "Source";
+  // headingGroup.append(heading, byline);
   const meta = document.createElement("p");
   meta.textContent = `${cellLetters().length} letters`;
   title.append(headingGroup, meta);
@@ -875,7 +876,7 @@ function renderPrintSheet() {
       clueMarker.className = "print-cell-clue";
       clueMarker.textContent = assignments.byCell.get(cell.index)?.label || "";
       const letter = document.createElement("span");
-      letter.textContent = cell.letter;
+      letter.textContent = elements.fillGridPrint?.checked ? cell.letter : " ";
       node.append(number, clueMarker, letter);
     }
     grid.append(node);
@@ -1134,6 +1135,7 @@ elements.closePrintPreview.addEventListener("click", () => {
 
 elements.printFromPreview.addEventListener("click", printCurrentPuzzle);
 elements.fillAnswersPrint.addEventListener("change", renderPrintSheet);
+elements.fillGridPrint.addEventListener("change", renderPrintSheet);
 
 elements.resetPool.addEventListener("click", () => {
   state.poolOrder = [];
