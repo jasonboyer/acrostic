@@ -755,7 +755,7 @@ textarea:focus {
 
 .dot-leader {
   flex: 1;
-  min-width: 24px;
+  min-width: 12px;
   border-bottom: 1px dotted #777;
   transform: translateY(-3px);
 }
@@ -765,8 +765,13 @@ textarea:focus {
   flex-wrap: wrap;
   gap: 4px;
   margin: 0;
-  padding: 0;
+  padding-left: 2rem;
   align-items: start;
+}
+
+.answer-blanks::before {
+  content: "";
+  margin-left: -2rem;
 }
 
 .answer-unit {

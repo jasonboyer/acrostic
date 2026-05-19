@@ -852,15 +852,15 @@ function renderPrintSheet() {
 
   const title = document.createElement("div");
   title.className = "print-title";
-  const headingGroup = document.createElement("div");
+  // const headingGroup = document.createElement("div");
   const heading = document.createElement("h2");
   heading.textContent = state.puzzleTitle || state.title || "Untitled Acrostic";
   // const byline = document.createElement("p");
   // byline.textContent = state.author ? `Source: ${state.author}` : "Source";
   // headingGroup.append(heading, byline);
-  const meta = document.createElement("p");
-  meta.textContent = `${cellLetters().length} letters`;
-  title.append(headingGroup, meta);
+  // const meta = document.createElement("p");
+  // meta.textContent = `${cellLetters().length} letters`;
+  // title.append(headingGroup, meta);
 
   const grid = document.createElement("div");
   grid.className = "print-grid";
