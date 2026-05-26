@@ -1,0 +1,393 @@
+{
+  "format": "acrostic-constructor",
+  "version": 1,
+  "author": "Manguel",
+  "title": "A History of Reading",
+  "puzzleTitle": "Sample acrostic (from NYT)",
+  "source": {
+    "author": "Manguel",
+    "title": "A History of Reading",
+    "puzzleTitle": "Sample acrostic (from NYT)",
+    "quote": "The Grand Vizier of Persia, in order not to part with his collection of one hundred seven-teen thousand volumes when travelling had them carried by a caravan of four hundred camels trained to walk in alphabetical order."
+  },
+  "quote": "The Grand Vizier of Persia, in order not to part with his collection of one hundred seven-teen thousand volumes when travelling had them carried by a caravan of four hundred camels trained to walk in alphabetical order.",
+  "columns": 27,
+  "minLength": 4,
+  "initials": "MANGUELAHISTORYOFREADING",
+  "answers": [
+    {
+      "label": "A",
+      "requiredInitial": "M",
+      "answer": "MOTION",
+      "length": 6
+    },
+    {
+      "label": "B",
+      "requiredInitial": "A",
+      "answer": "Anaconda",
+      "length": 8
+    },
+    {
+      "label": "C",
+      "requiredInitial": "N",
+      "answer": "Narcotic",
+      "length": 8
+    },
+    {
+      "label": "D",
+      "requiredInitial": "G",
+      "answer": "Gogo Dancer",
+      "length": 10
+    },
+    {
+      "label": "E",
+      "requiredInitial": "U",
+      "answer": "",
+      "length": 4
+    },
+    {
+      "label": "F",
+      "requiredInitial": "E",
+      "answer": "",
+      "length": 4
+    },
+    {
+      "label": "G",
+      "requiredInitial": "L",
+      "answer": "",
+      "length": 4
+    },
+    {
+      "label": "H",
+      "requiredInitial": "A",
+      "answer": "",
+      "length": 4
+    },
+    {
+      "label": "I",
+      "requiredInitial": "H",
+      "answer": "",
+      "length": 4
+    },
+    {
+      "label": "J",
+      "requiredInitial": "I",
+      "answer": "",
+      "length": 4
+    },
+    {
+      "label": "K",
+      "requiredInitial": "S",
+      "answer": "",
+      "length": 4
+    },
+    {
+      "label": "L",
+      "requiredInitial": "T",
+      "answer": "",
+      "length": 4
+    },
+    {
+      "label": "M",
+      "requiredInitial": "O",
+      "answer": "",
+      "length": 4
+    },
+    {
+      "label": "N",
+      "requiredInitial": "R",
+      "answer": "",
+      "length": 4
+    },
+    {
+      "label": "O",
+      "requiredInitial": "Y",
+      "answer": "",
+      "length": 4
+    },
+    {
+      "label": "P",
+      "requiredInitial": "O",
+      "answer": "",
+      "length": 4
+    },
+    {
+      "label": "Q",
+      "requiredInitial": "F",
+      "answer": "",
+      "length": 4
+    },
+    {
+      "label": "R",
+      "requiredInitial": "R",
+      "answer": "",
+      "length": 4
+    },
+    {
+      "label": "S",
+      "requiredInitial": "E",
+      "answer": "",
+      "length": 4
+    },
+    {
+      "label": "T",
+      "requiredInitial": "A",
+      "answer": "",
+      "length": 4
+    },
+    {
+      "label": "U",
+      "requiredInitial": "D",
+      "answer": "",
+      "length": 4
+    },
+    {
+      "label": "V",
+      "requiredInitial": "I",
+      "answer": "",
+      "length": 4
+    },
+    {
+      "label": "W",
+      "requiredInitial": "N",
+      "answer": "",
+      "length": 4
+    },
+    {
+      "label": "X",
+      "requiredInitial": "G",
+      "answer": "",
+      "length": 4
+    }
+  ],
+  "clues": [
+    {
+      "label": "A",
+      "requiredInitial": "M",
+      "answer": "MOTION",
+      "clue": "The answer is MOTION",
+      "length": 6,
+      "cellNumbers": [
+        89,
+        58,
+        171,
+        21,
+        47,
+        55
+      ]
+    },
+    {
+      "label": "B",
+      "requiredInitial": "A",
+      "answer": "Anaconda",
+      "clue": "The answer is Anaconda",
+      "length": 8,
+      "cellNumbers": [
+        126,
+        30,
+        174,
+        173,
+        31,
+        76,
+        139,
+        22
+      ]
+    },
+    {
+      "label": "C",
+      "requiredInitial": "N",
+      "answer": "Narcotic",
+      "clue": "The answer is Narcotic",
+      "length": 8,
+      "cellNumbers": [
+        63,
+        164,
+        180,
+        113,
+        86,
+        77,
+        12,
+        123
+      ]
+    },
+    {
+      "label": "D",
+      "requiredInitial": "G",
+      "answer": "Gogo Dancer",
+      "clue": "The answer is Gogo Dancer",
+      "length": 10,
+      "cellNumbers": [
+        4,
+        34,
+        105,
+        25,
+        108,
+        82,
+        7,
+        46,
+        179,
+        150
+      ]
+    },
+    {
+      "label": "E",
+      "requiredInitial": "U",
+      "answer": "",
+      "clue": "",
+      "length": 4,
+      "cellNumbers": []
+    },
+    {
+      "label": "F",
+      "requiredInitial": "E",
+      "answer": "",
+      "clue": "",
+      "length": 4,
+      "cellNumbers": []
+    },
+    {
+      "label": "G",
+      "requiredInitial": "L",
+      "answer": "",
+      "clue": "",
+      "length": 4,
+      "cellNumbers": []
+    },
+    {
+      "label": "H",
+      "requiredInitial": "A",
+      "answer": "",
+      "clue": "",
+      "length": 4,
+      "cellNumbers": []
+    },
+    {
+      "label": "I",
+      "requiredInitial": "H",
+      "answer": "",
+      "clue": "",
+      "length": 4,
+      "cellNumbers": []
+    },
+    {
+      "label": "J",
+      "requiredInitial": "I",
+      "answer": "",
+      "clue": "",
+      "length": 4,
+      "cellNumbers": []
+    },
+    {
+      "label": "K",
+      "requiredInitial": "S",
+      "answer": "",
+      "clue": "",
+      "length": 4,
+      "cellNumbers": []
+    },
+    {
+      "label": "L",
+      "requiredInitial": "T",
+      "answer": "",
+      "clue": "",
+      "length": 4,
+      "cellNumbers": []
+    },
+    {
+      "label": "M",
+      "requiredInitial": "O",
+      "answer": "",
+      "clue": "",
+      "length": 4,
+      "cellNumbers": []
+    },
+    {
+      "label": "N",
+      "requiredInitial": "R",
+      "answer": "",
+      "clue": "",
+      "length": 4,
+      "cellNumbers": []
+    },
+    {
+      "label": "O",
+      "requiredInitial": "Y",
+      "answer": "",
+      "clue": "",
+      "length": 4,
+      "cellNumbers": []
+    },
+    {
+      "label": "P",
+      "requiredInitial": "O",
+      "answer": "",
+      "clue": "",
+      "length": 4,
+      "cellNumbers": []
+    },
+    {
+      "label": "Q",
+      "requiredInitial": "F",
+      "answer": "",
+      "clue": "",
+      "length": 4,
+      "cellNumbers": []
+    },
+    {
+      "label": "R",
+      "requiredInitial": "R",
+      "answer": "",
+      "clue": "",
+      "length": 4,
+      "cellNumbers": []
+    },
+    {
+      "label": "S",
+      "requiredInitial": "E",
+      "answer": "",
+      "clue": "",
+      "length": 4,
+      "cellNumbers": []
+    },
+    {
+      "label": "T",
+      "requiredInitial": "A",
+      "answer": "",
+      "clue": "",
+      "length": 4,
+      "cellNumbers": []
+    },
+    {
+      "label": "U",
+      "requiredInitial": "D",
+      "answer": "",
+      "clue": "",
+      "length": 4,
+      "cellNumbers": []
+    },
+    {
+      "label": "V",
+      "requiredInitial": "I",
+      "answer": "",
+      "clue": "",
+      "length": 4,
+      "cellNumbers": []
+    },
+    {
+      "label": "W",
+      "requiredInitial": "N",
+      "answer": "",
+      "clue": "",
+      "length": 4,
+      "cellNumbers": []
+    },
+    {
+      "label": "X",
+      "requiredInitial": "G",
+      "answer": "",
+      "clue": "",
+      "length": 4,
+      "cellNumbers": []
+    }
+  ]
+}

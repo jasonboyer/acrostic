@@ -175,7 +175,7 @@ function renderGrid() {
       } else if (cell.type === "dash") {
         const dash = document.createElement("span");
         dash.className = "cell-letter";
-        dash.textContent = cell.letter;
+        dash.textContent = "—";
         node.append(dash);
       }
       elements.grid.append(node);
@@ -953,7 +953,7 @@ function renderPrintSheet() {
         node.append(number, clueMarker, letter);
       } else if (cell.type === "dash") {
         const dash = document.createElement("span");
-        dash.textContent = cell.letter;
+        dash.textContent = "—";
         node.append(dash);
       }
       grid.append(node);
@@ -1005,20 +1005,70 @@ function renderPrintSheet() {
 
   const body = document.createElement("div");
   body.className = "print-lower-layout";
-  body.append(clues, renderAvailablePool(assignments.availablePool));
+  body.append(clues);
 
   elements.printSheet.append(title, grid, body);
+  requestPrintSpacingFit();
+}
+
+function printSheetContentBottom(sheet) {
+  const sheetRect = sheet.getBoundingClientRect();
+  const style = getComputedStyle(sheet);
+  const paddingBottom = Number.parseFloat(style.paddingBottom) || 0;
+  return sheetRect.bottom - paddingBottom;
+}
+
+function clueBlockHeight(clues, gap) {
+  clues.style.setProperty("--print-clue-gap", `${gap}px`);
+  return clues.getBoundingClientRect().height;
+}
+
+function fitPrintClueSpacing() {
+  const sheet = elements.printSheet;
+  const clues = sheet.querySelector(".print-clues");
+  if (!clues || elements.printPreviewPanel.hidden) return;
+
+  const cluesTop = clues.getBoundingClientRect().top;
+  const availableHeight = printSheetContentBottom(sheet) - cluesTop;
+  if (availableHeight <= 0) return;
+
+  let low = 0;
+  let high = 12;
+  clueBlockHeight(clues, low);
+
+  while (high < 80 && clueBlockHeight(clues, high) < availableHeight) {
+    high *= 1.5;
+  }
+
+  for (let step = 0; step < 18; step += 1) {
+    const mid = (low + high) / 2;
+    if (clueBlockHeight(clues, mid) <= availableHeight) {
+      low = mid;
+    } else {
+      high = mid;
+    }
+  }
+
+  clues.style.setProperty("--print-clue-gap", `${Math.max(0, low - 0.5).toFixed(2)}px`);
+}
+
+function requestPrintSpacingFit() {
+  if (elements.printPreviewPanel.hidden) return;
+  window.requestAnimationFrame(fitPrintClueSpacing);
 }
 
 function showPrintPreview() {
   renderPrintSheet();
   elements.printPreviewPanel.hidden = false;
+  fitPrintClueSpacing();
+  window.requestAnimationFrame(fitPrintClueSpacing);
   elements.printPreviewPanel.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 function printCurrentPuzzle() {
   renderPrintSheet();
   elements.printPreviewPanel.hidden = false;
+  fitPrintClueSpacing();
   window.print();
 }
 

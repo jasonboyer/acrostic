@@ -600,7 +600,10 @@ textarea:focus {
   background: white;
   color: #111;
   border: 1px solid #cfd9d3;
-  padding: 20px;
+  width: 11in;
+  min-height: 8.5in;
+  margin: 0 auto;
+  padding: 0.35in;
   overflow: auto;
 }
 
@@ -608,12 +611,12 @@ textarea:focus {
   display: flex;
   justify-content: space-between;
   gap: 18px;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   font-family: Georgia, "Times New Roman", serif;
 }
 
 .print-title h2 {
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .print-title p {
@@ -624,22 +627,23 @@ textarea:focus {
 .print-grid {
   --columns: 27;
   display: grid;
-  grid-template-columns: repeat(var(--columns), 24px);
+  grid-template-columns: repeat(var(--columns), minmax(0, 1fr));
   gap: 0;
-  margin-bottom: 18px;
-  width: max-content;
+  margin-bottom: 30px;
+  width: 100%;
   max-width: 100%;
 }
 
 .print-cell {
   position: relative;
-  width: 24px;
-  height: 24px;
+  width: auto;
+  height: auto;
+  aspect-ratio: 1;
   border: 1px solid #111;
   margin: -1px 0 0 -1px;
   display: grid;
   place-items: center;
-  font-size: 13px;
+  font-size: clamp(9px, 1.45vw, 18px);
   font-weight: 800;
   line-height: 1;
 }
@@ -651,7 +655,7 @@ textarea:focus {
 }
 
 .print-cell.dash {
-  font-size: 22px;
+  font-size: clamp(18px, 2.2vw, 28px);
   line-height: 1;
 }
 
@@ -659,7 +663,7 @@ textarea:focus {
 .print-cell-clue {
   position: absolute;
   top: 1px;
-  font-size: 6px;
+  font-size: clamp(5px, 0.55vw, 8px);
   font-family: Arial, sans-serif;
   font-weight: 700;
 }
@@ -673,14 +677,14 @@ textarea:focus {
 }
 
 .print-lower-layout {
-  display: grid;
-  gap: 16px;
+  display: block;
   align-items: start;
 }
 
 .available-pool {
   font-family: Arial, sans-serif;
   min-width: 0;
+  margin-top: 8px;
 }
 
 .available-pool h3 {
@@ -693,7 +697,7 @@ textarea:focus {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
-  gap: 8px 10px;
+  gap: 4px 6px;
 }
 
 .pool-letter-group {
@@ -705,14 +709,14 @@ textarea:focus {
 .pool-cells {
   display: flex;
   flex-wrap: wrap;
-  gap: 2px;
-  max-width: 112px;
+  gap: 1px;
+  max-width: 86px;
 }
 
 .pool-cell {
   position: relative;
-  width: 24px;
-  height: 24px;
+  width: 18px;
+  height: 18px;
   border: 1px solid #333;
   display: grid;
   place-items: center;
@@ -737,23 +741,29 @@ textarea:focus {
 
 .print-clues {
   column-count: 2;
-  column-gap: 28px;
+  column-gap: 56px;
+  column-fill: balance;
   font-family: Georgia, "Times New Roman", serif;
   min-width: 0;
+  width: 100%;
+}
+
+.print-clues {
+  --print-clue-gap: 11px;
 }
 
 .print-clue {
   break-inside: avoid;
-  margin: 0 0 8px;
+  margin: 0 0 var(--print-clue-gap);
 }
 
 .print-clue-line {
   display: grid;
-  grid-template-columns: 24px minmax(120px, 1fr) 232px;
+  grid-template-columns: 22px minmax(86px, 1fr) minmax(172px, 50%);
   align-items: start;
-  column-gap: 7px;
-  font-size: 12px;
-  line-height: 1.25;
+  column-gap: 6px;
+  font-size: 11px;
+  line-height: 1.24;
 }
 
 .print-clue-label {
@@ -763,7 +773,7 @@ textarea:focus {
 .print-clue-body {
   display: flex;
   align-items: baseline;
-  gap: 5px;
+  gap: 3px;
   min-width: 0;
 }
 
@@ -781,33 +791,34 @@ textarea:focus {
 .answer-blanks {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px;
+  gap: 3px;
   margin: 0;
-  padding-left: 2rem;
+  padding-left: 1.35rem;
   align-items: start;
+  justify-content: flex-end;
 }
 
 .answer-blanks::before {
   content: "";
-  margin-left: -2rem;
+  margin-left: -1.35rem;
 }
 
 .answer-unit {
   display: grid;
   justify-items: center;
   gap: 1px;
-  min-width: 20px;
+  min-width: 17px;
 }
 
 .answer-line {
   font-family: Arial, sans-serif;
-  font-size: 12px;
+  font-size: 10px;
   line-height: 1;
 }
 
 .answer-cell-number {
   font-family: Arial, sans-serif;
-  font-size: 7px;
+  font-size: 6px;
   line-height: 1;
 }
 
@@ -824,7 +835,7 @@ textarea:focus {
 }
 
 @page {
-  size: landscape;
+  size: 11in 8.5in;
   margin: 0.35in;
 }
 
@@ -832,6 +843,12 @@ textarea:focus {
   * {
     print-color-adjust: exact;
     -webkit-print-color-adjust: exact;
+  }
+
+  html,
+  body {
+    width: 11in;
+    min-height: 8.5in;
   }
 
   body {
@@ -853,9 +870,22 @@ textarea:focus {
   }
 
   .print-sheet {
+    width: auto;
+    min-height: 0;
     border: 0;
     padding: 0;
     overflow: visible;
+  }
+
+  .print-grid {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+
+  .print-clue {
+    break-inside: avoid;
+    page-break-inside: avoid;
   }
 }
 
