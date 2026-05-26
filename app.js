@@ -94,13 +94,23 @@ function quoteCells(quote) {
         letter: char.toUpperCase(),
         index: letterIndex
       };
+    } else if (char === '-') {
+      return {
+        type: "dash",
+        letter: char
+      };
+    } else if (char === ' ') {
+      return {
+        type: "black",
+        letter: char
+      };
     }
     return {
-      type: "black",
+      type: "skip",
       letter: char
     };
   });
-  while (cells.length && cells[cells.length - 1].type === "black") {
+  while (cells.length && ["black", "skip"].includes(cells[cells.length - 1].type)) {
     cells.pop();
   }
   return cells;
@@ -145,24 +155,31 @@ function renderGrid() {
   elements.grid.innerHTML = "";
 
   cells.forEach((cell) => {
-    const node = document.createElement("div");
-    node.className = cell.type === "black" ? "cell black" : "cell";
-    if (cell.type === "letter") {
-      const number = document.createElement("span");
-      number.className = "cell-number";
-      number.textContent = cell.index;
+    if (cell.type !== "skip") {
+      const node = document.createElement("div");
+      node.className = cell.type === "black" ? "cell black" : cell.type === "dash" ? "cell dash" : "cell";
+      if (cell.type === "letter") {
+        const number = document.createElement("span");
+        number.className = "cell-number";
+        number.textContent = cell.index;
 
-      const clueMarker = document.createElement("span");
-      clueMarker.className = "cell-clue";
-      clueMarker.textContent = assignments.byCell.get(cell.index)?.label || "";
+        const clueMarker = document.createElement("span");
+        clueMarker.className = "cell-clue";
+        clueMarker.textContent = assignments.byCell.get(cell.index)?.label || "";
 
-      const letter = document.createElement("span");
-      letter.className = "cell-letter";
-      letter.textContent = cell.letter;
+        const letter = document.createElement("span");
+        letter.className = "cell-letter";
+        letter.textContent = cell.letter;
 
-      node.append(number, clueMarker, letter);
+        node.append(number, clueMarker, letter);
+      } else if (cell.type === "dash") {
+        const dash = document.createElement("span");
+        dash.className = "cell-letter";
+        dash.textContent = cell.letter;
+        node.append(dash);
+      }
+      elements.grid.append(node);
     }
-    elements.grid.append(node);
   });
 }
 
@@ -176,6 +193,7 @@ function renderClues() {
 
     row.dataset.index = String(index);
     row.classList.toggle("invalid", isInvalid);
+    row.classList.toggle("missing-assignment", clueHasMissingAssignment(clue));
     row.classList.toggle("unavailable-initial", unavailableInitialIndexes().has(index));
     row.querySelector(".clue-letter").textContent = clueLabel(index);
     row.querySelector(".required-initial").textContent = clue.requiredInitial;
@@ -188,9 +206,12 @@ function renderClues() {
     answerInput.placeholder = "";
     clueInput.value = clue.clue;
     updateLengthOutput(lengthOutput, clue);
+    const missing = missingAssignedLetters(clue);
+    answerInput.setCustomValidity(missing.length ? `No available quote cell for: ${missing.join(", ")}` : "");
 
     answerInput.addEventListener("input", () => {
       clue.answer = answerInput.value;
+      rejectUnavailableAnswerLetters(clue, answerInput);
       syncLengthFromAnswer(clue, lengthOutput);
       refreshClueRow(row, clue, index);
       updateLengthOutput(lengthOutput, clue);
@@ -280,11 +301,47 @@ function unavailableInitialIndexes() {
   return unavailable;
 }
 
+function missingAssignedLetters(clue) {
+  const letters = answerLetters(clue.answer);
+  if (!letters) return [];
+  const cellNumbers = Array.isArray(clue.cellNumbers) ? clue.cellNumbers : [];
+  return Array.from(letters).filter((letter, index) => !cellNumbers[index]);
+}
+
+function clueHasMissingAssignment(clue) {
+  return missingAssignedLetters(clue).length > 0;
+}
+
+function removeUnassignedAnswerLetters(answer, cellNumbers) {
+  let letterIndex = 0;
+  return Array.from(answer).filter((char) => {
+    if (!/[A-Za-z]/.test(char)) return true;
+    const keep = Boolean(cellNumbers[letterIndex]);
+    letterIndex += 1;
+    return keep;
+  }).join("");
+}
+
+function rejectUnavailableAnswerLetters(clue, answerInput) {
+  syncCellAssignments();
+  if (!clueHasMissingAssignment(clue)) return false;
+  clue.answer = removeUnassignedAnswerLetters(clue.answer, clue.cellNumbers || []);
+  answerInput.value = clue.answer;
+  syncCellAssignments();
+  return true;
+}
+
 function refreshClueRow(row, clue, index) {
   const cleanAnswer = answerLetters(clue.answer);
   row.classList.toggle("invalid", Boolean(cleanAnswer && cleanAnswer[0] !== clue.requiredInitial));
+  row.classList.toggle("missing-assignment", clueHasMissingAssignment(clue));
   if (Number.isInteger(index)) {
     row.classList.toggle("unavailable-initial", unavailableInitialIndexes().has(index));
+  }
+  const answerInput = row.querySelector(".answer-input");
+  if (answerInput) {
+    const missing = missingAssignedLetters(clue);
+    answerInput.setCustomValidity(missing.length ? `No available quote cell for: ${missing.join(", ")}` : "");
   }
 }
 
@@ -293,6 +350,15 @@ function refreshClueWarnings() {
   elements.clueTable.querySelectorAll(".clue-row").forEach((row) => {
     const index = Number(row.dataset.index);
     row.classList.toggle("unavailable-initial", unavailable.has(index));
+    const clue = state.clues[index];
+    if (clue) {
+      row.classList.toggle("missing-assignment", clueHasMissingAssignment(clue));
+      const answerInput = row.querySelector(".answer-input");
+      if (answerInput) {
+        const missing = missingAssignedLetters(clue);
+        answerInput.setCustomValidity(missing.length ? `No available quote cell for: ${missing.join(", ")}` : "");
+      }
+    }
   });
 }
 
@@ -357,6 +423,12 @@ function buildChecks(letterCount, answerLetterCount) {
       type: "error",
       message: `Available pool lacks required initials for blank answer(s): ${labels}.`
     });
+  }
+
+  const missingAssignment = state.clues.findIndex(clueHasMissingAssignment);
+  if (missingAssignment >= 0) {
+    const missing = missingAssignedLetters(state.clues[missingAssignment]).join(", ");
+    checks.push({ type: "error", message: `${clueLabel(missingAssignment)} uses answer letter(s) with no available quote cell: ${missing}.` });
   }
 
   const badInitial = state.clues.findIndex((clue) => {
@@ -866,20 +938,26 @@ function renderPrintSheet() {
   grid.className = "print-grid";
   grid.style.setProperty("--columns", state.columns);
   cells.forEach((cell) => {
-    const node = document.createElement("div");
-    node.className = cell.type === "black" ? "print-cell black" : "print-cell";
-    if (cell.type === "letter") {
-      const number = document.createElement("span");
-      number.className = "print-cell-number";
-      number.textContent = cell.index;
-      const clueMarker = document.createElement("span");
-      clueMarker.className = "print-cell-clue";
-      clueMarker.textContent = assignments.byCell.get(cell.index)?.label || "";
-      const letter = document.createElement("span");
-      letter.textContent = elements.fillGridPrint?.checked ? cell.letter : " ";
-      node.append(number, clueMarker, letter);
+    if (cell.type !== "skip") {
+      const node = document.createElement("div");
+      node.className = cell.type === "black" ? "print-cell black" : cell.type === "dash" ? "print-cell dash" : "print-cell";
+      if (cell.type === "letter") {
+        const number = document.createElement("span");
+        number.className = "print-cell-number";
+        number.textContent = cell.index;
+        const clueMarker = document.createElement("span");
+        clueMarker.className = "print-cell-clue";
+        clueMarker.textContent = assignments.byCell.get(cell.index)?.label || "";
+        const letter = document.createElement("span");
+        letter.textContent = elements.fillGridPrint?.checked ? cell.letter : "";
+        node.append(number, clueMarker, letter);
+      } else if (cell.type === "dash") {
+        const dash = document.createElement("span");
+        dash.textContent = cell.letter;
+        node.append(dash);
+      }
+      grid.append(node);
     }
-    grid.append(node);
   });
 
   const clues = document.createElement("div");

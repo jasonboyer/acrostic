@@ -347,7 +347,7 @@ textarea:focus {
   --columns: 27;
   display: grid;
   grid-template-columns: repeat(var(--columns), 32px);
-  gap: 3px;
+  gap: 0;
   align-items: start;
 }
 
@@ -355,7 +355,8 @@ textarea:focus {
   position: relative;
   width: 32px;
   height: 32px;
-  border: 1px solid #c9d4ce;
+  border: 1px solid #111;
+  margin: -1px 0 0 -1px;
   background: white;
   display: grid;
   place-items: center;
@@ -365,7 +366,7 @@ textarea:focus {
 
 .cell.black {
   background: var(--black-cell);
-  border-color: var(--black-cell);
+  border-color: #111;
 }
 
 .cell-number {
@@ -388,6 +389,12 @@ textarea:focus {
 
 .cell-letter {
   margin-top: 5px;
+}
+
+.cell.dash .cell-letter {
+  margin: 0;
+  font-size: 1.85rem;
+  line-height: 1;
 }
 
 .clue-panel {
@@ -520,13 +527,16 @@ textarea:focus {
 }
 
 .clue-row.invalid,
-.clue-row.unavailable-initial {
+.clue-row.unavailable-initial,
+.clue-row.missing-assignment {
   border-color: rgba(176, 47, 47, 0.45);
   background: #fffafa;
 }
 
 .clue-row.unavailable-initial .clue-letter,
-.clue-row.unavailable-initial .required-initial {
+.clue-row.unavailable-initial .required-initial,
+.clue-row.missing-assignment .clue-letter,
+.clue-row.missing-assignment .required-initial {
   background: #fdecec;
   color: var(--error);
 }
@@ -615,7 +625,7 @@ textarea:focus {
   --columns: 27;
   display: grid;
   grid-template-columns: repeat(var(--columns), 24px);
-  gap: 2px;
+  gap: 0;
   margin-bottom: 18px;
   width: max-content;
   max-width: 100%;
@@ -625,7 +635,8 @@ textarea:focus {
   position: relative;
   width: 24px;
   height: 24px;
-  border: 1px solid #333;
+  border: 1px solid #111;
+  margin: -1px 0 0 -1px;
   display: grid;
   place-items: center;
   font-size: 13px;
@@ -634,7 +645,14 @@ textarea:focus {
 }
 
 .print-cell.black {
-  background: #111;
+  background: #111 !important;
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+.print-cell.dash {
+  font-size: 22px;
+  line-height: 1;
 }
 
 .print-cell-number,
@@ -811,6 +829,11 @@ textarea:focus {
 }
 
 @media print {
+  * {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
   body {
     background: white;
   }
